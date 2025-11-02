@@ -122,6 +122,9 @@ namespace powered_parachute.Services
             if (!logs.Any())
                 return flights;
 
+            // Get all existing flights
+            var allFlights = await _database.Table<Flight>().ToListAsync();
+
             // Group logs by date
             var logsByDate = logs.GroupBy(l => l.CompletedAt.Date)
                 .OrderByDescending(g => g.Key);
@@ -129,11 +132,10 @@ namespace powered_parachute.Services
             foreach (var dateGroup in logsByDate)
             {
                 var dateLogs = dateGroup.OrderBy(l => l.CompletedAt).ToList();
+                var flightDate = dateGroup.Key;
 
                 // Check if there's an existing flight for this date
-                var existingFlight = await _database.Table<Flight>()
-                    .Where(f => f.FlightDate.Date == dateGroup.Key)
-                    .FirstOrDefaultAsync();
+                var existingFlight = allFlights.FirstOrDefault(f => f.FlightDate.Date == flightDate);
 
                 Flight flight;
                 if (existingFlight != null)
@@ -145,7 +147,7 @@ namespace powered_parachute.Services
                     // Create a flight record from the logs
                     flight = new Flight
                     {
-                        FlightDate = dateGroup.Key,
+                        FlightDate = flightDate,
                         StartTime = dateLogs.First().CompletedAt,
                         EndTime = dateLogs.Last().CompletedAt,
                         CreatedAt = DateTime.UtcNow
