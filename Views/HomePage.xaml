@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="40,60,40,40" Spacing="35" VerticalOptions="Center">
+
+            <!-- App Title - Optimized for iPhone 15 Pro -->
+            <Label Text="Pegasus Flight"
+                   FontSize="52"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="White" />
+
+            <Label Text="Powrachute Flight Assistant"
+                   FontSize="20"
+                   HorizontalOptions="Center"
+                   TextColor="White"
+                   Opacity="0.95"
+                   Margin="0,0,0,45" />
+
+            <!-- Checklists Button - Extra large touch target for outdoor use -->
+            <Border StrokeThickness="0"
+                    BackgroundColor="White"
+                    Padding="0"
+                    HeightRequest="110">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="18" />
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToChecklistsCommand}" />
+                </Border.GestureRecognizers>
+
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="25,0">
+                    <Label Grid.Column="0"
+                           FontFamily="MaterialRegular"
+                           FontSize="36"
+                           Text="{x:Static m:MaterialRegular.Checklist}"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+
+                    <Label Grid.Column="1"
+                           Text="Checklists"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center"
+                           Padding="20,0" />
+
+                    <Label Grid.Column="2"
+                           FontFamily="MaterialRegular"
+                           FontSize="28"
+                           Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           TextColor="{StaticResource Gray400}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Flight Log Button - Extra large touch target for outdoor use -->
+            <Border StrokeThickness="0"
+                    BackgroundColor="White"
+                    Padding="0"
+                    HeightRequest="110">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="18" />
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToFlightLogCommand}" />
+                </Border.GestureRecognizers>
+
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="25,0">
+                    <Label Grid.Column="0"
+                           FontFamily="MaterialRegular"
+                           FontSize="36"
+                           Text="{x:Static m:MaterialRegular.Flight}"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+
+                    <Label Grid.Column="1"
+                           Text="Flight Log"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center"
+                           Padding="20,0" />
+
+                    <Label Grid.Column="2"
+                           FontFamily="MaterialRegular"
+                           FontSize="28"
+                           Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           TextColor="{StaticResource Gray400}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

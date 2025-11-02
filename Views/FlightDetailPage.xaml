@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.FlightDetailPage"
+             x:DataType="vm:FlightDetailViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView BackgroundColor="#F5F5F5">
+        <VerticalStackLayout Padding="22" Spacing="20">
+
+            <!-- Flight Date and Time -->
+            <Border BackgroundColor="{StaticResource Primary}"
+                    Padding="22,18"
+                    StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding DateDisplay}"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+
+                    <HorizontalStackLayout Spacing="20">
+                        <Label Text="{Binding TimeRangeDisplay}"
+                               FontSize="18"
+                               TextColor="White" />
+
+                        <Label Text="{Binding DurationDisplay}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#90EE90" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Checklist Summary -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="📋"
+                           FontSize="24"
+                           VerticalOptions="Center" />
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding TotalChecklists, StringFormat='{0} Checklists Completed'}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" />
+
+                        <Label Text="Tap below to see details"
+                               FontSize="14"
+                               TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Checklist Details -->
+            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding ChecklistGroups}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChecklistLogGroup">
+                        <VerticalStackLayout Spacing="10">
+                            <!-- Section for each checklist type -->
+                            <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Items}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ChecklistLogItem">
+                                        <Border BackgroundColor="White"
+                                                StrokeThickness="1"
+                                                Stroke="{StaticResource Gray300}"
+                                                Padding="16,14">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="10" />
+                                            </Border.StrokeShape>
+
+                                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                                                <Label Grid.Row="0" Grid.Column="0"
+                                                       Text="{Binding ChecklistName}"
+                                                       FontSize="17"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Primary}" />
+
+                                                <Label Grid.Row="0" Grid.Column="1"
+                                                       Text="{Binding TimeDisplay}"
+                                                       FontSize="16"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Success}"
+                                                       VerticalOptions="Center" />
+
+                                                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                       Text="{Binding CompletionPercentage, StringFormat='✓ {0}% complete'}"
+                                                       FontSize="14"
+                                                       TextColor="{Binding CompletionPercentage, Converter={StaticResource CompletionColorConverter}}"
+                                                       Margin="0,4,0,0" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <!-- Flight Notes Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Flight Details"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+
+                <!-- Location -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Location"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Entry Text="{Binding Location}"
+                           Placeholder="Airport or flying site"
+                           FontSize="16"
+                           BackgroundColor="White" />
+                </VerticalStackLayout>
+
+                <!-- Weather -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Weather Conditions"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Entry Text="{Binding Weather}"
+                           Placeholder="Wind, temperature, visibility..."
+                           FontSize="16"
+                           BackgroundColor="White" />
+                </VerticalStackLayout>
+
+                <!-- Notes -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Notes"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Editor Text="{Binding Notes}"
+                            Placeholder="Flight notes, observations, issues..."
+                            FontSize="16"
+                            MinimumHeightRequest="120"
+                            BackgroundColor="White" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Action Buttons -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15" Margin="0,10,0,20">
+                <Button Grid.Column="0"
+                        Text="Save"
+                        Command="{Binding SaveFlightCommand}"
+                        BackgroundColor="{StaticResource Success}"
+                        TextColor="White"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        HeightRequest="55"
+                        CornerRadius="12" />
+
+                <Button Grid.Column="1"
+                        Text="Delete"
+                        Command="{Binding DeleteFlightCommand}"
+                        BackgroundColor="{StaticResource Secondary}"
+                        TextColor="White"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        HeightRequest="55"
+                        CornerRadius="12" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

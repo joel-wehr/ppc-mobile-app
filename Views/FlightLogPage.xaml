@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.FlightLogPage"
+             x:DataType="vm:FlightLogViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*" BackgroundColor="#F5F5F5">
+
+        <!-- Header with Clear Button -->
+        <Border Grid.Row="0"
+                BackgroundColor="{StaticResource Primary}"
+                Padding="22,20"
+                StrokeThickness="0">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Grid.Column="0"
+                       Text="Flights"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center" />
+
+                <Button Grid.Column="1"
+                        Text="Clear All"
+                        Command="{Binding ClearAllLogsCommand}"
+                        BackgroundColor="{StaticResource Secondary}"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HeightRequest="45"
+                        Padding="20,0"
+                        CornerRadius="8"
+                        IsVisible="{Binding HasFlights}" />
+            </Grid>
+        </Border>
+
+        <!-- Flights List -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding HasFlights}">
+            <VerticalStackLayout Padding="22" Spacing="15" BindableLayout.ItemsSource="{Binding Flights}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FlightSummary">
+                        <Border BackgroundColor="White"
+                                StrokeThickness="2"
+                                Stroke="{StaticResource Primary}"
+                                Padding="20,18"
+                                MinimumHeightRequest="90">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FlightLogViewModel}}, Path=NavigateToFlightCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                                <!-- Date -->
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding DateDisplay}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+
+                                <!-- Time -->
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding TimeDisplay}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Success}"
+                                       VerticalOptions="Center" />
+
+                                <!-- Checklists Count -->
+                                <Label Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding ChecklistsDisplay}"
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray600}"
+                                       Margin="0,6,0,0" />
+
+                                <!-- Duration -->
+                                <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding DurationDisplay}"
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray600}"
+                                       Margin="0,6,0,0"
+                                       IsVisible="{Binding DurationDisplay, Converter={StaticResource StringNullOrEmptyBoolConverter}}" />
+
+                                <!-- Location -->
+                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                       Text="{Binding Location}"
+                                       FontSize="15"
+                                       TextColor="{StaticResource Gray500}"
+                                       Margin="0,4,0,0"
+                                       IsVisible="{Binding Location, Converter={StaticResource StringNullOrEmptyBoolConverter}}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Empty State -->
+        <VerticalStackLayout Grid.Row="1" Padding="40" Spacing="20" VerticalOptions="Center" IsVisible="{Binding HasFlights, Converter={StaticResource InvertedBoolConverter}}">
+            <Label Text="No Flights Logged"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray600}"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Complete a checklist to create your first flight log entry."
+                   FontSize="16"
+                   TextColor="{StaticResource Gray500}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

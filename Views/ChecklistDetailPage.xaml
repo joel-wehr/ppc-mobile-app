@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:models="clr-namespace:powered_parachute.Models"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.ChecklistDetailPage"
+             x:DataType="vm:ChecklistDetailViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Progress Header - Safe area aware for iPhone 15 Pro Dynamic Island -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,20,20,18" BackgroundColor="{StaticResource Primary}">
+            <Label Text="{Binding ProgressText}"
+                   FontSize="19"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+            <ProgressBar Progress="{Binding ProgressValue}"
+                         ProgressColor="White"
+                         HeightRequest="10"
+                         Margin="0,12,0,0" />
+        </VerticalStackLayout>
+
+        <!-- Checklist Items - Optimized spacing for iPhone 15 Pro -->
+        <ScrollView Grid.Row="1" BackgroundColor="#F5F5F5">
+            <VerticalStackLayout Padding="18" Spacing="18" BindableLayout.ItemsSource="{Binding GroupedItems}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChecklistItemGroup">
+                        <VerticalStackLayout Spacing="10">
+
+                            <!-- Section Header - High contrast for outdoor use -->
+                            <Label Text="{Binding SectionName}"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Primary}"
+                                   Margin="0,15,0,8" />
+
+                            <!-- Section Items -->
+                            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding .}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ChecklistItem">
+                                        <Border StrokeThickness="2"
+                                                BackgroundColor="White"
+                                                Padding="0"
+                                                MinimumHeightRequest="80"
+                                                Stroke="{Binding IsChecked, Converter={StaticResource BoolToColorConverter}, ConverterParameter='Success|Gray300', Mode=OneWay}">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="14" />
+                                            </Border.StrokeShape>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChecklistDetailViewModel}}, Path=ToggleItemCommand}"
+                                                                      CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+
+                                            <Grid>
+                                                <!-- Checkbox Layout - Shown when HasCounter = false -->
+                                                <Grid ColumnDefinitions="75,*" Padding="18" IsVisible="{Binding HasCounter, Converter={StaticResource InvertedBoolConverter}}">
+                                                    <Border Grid.Column="0"
+                                                            StrokeThickness="3"
+                                                            WidthRequest="50"
+                                                            HeightRequest="50"
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="Center"
+                                                            Stroke="{Binding IsChecked, Converter={StaticResource BoolToColorConverter}, ConverterParameter='Success|Primary', Mode=OneWay}"
+                                                            BackgroundColor="{Binding IsChecked, Converter={StaticResource BoolToColorConverter}, ConverterParameter='Success|Gray100', Mode=OneWay}">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="10" />
+                                                        </Border.StrokeShape>
+
+                                                        <Label FontFamily="MaterialRegular"
+                                                               FontSize="36"
+                                                               Text="{x:Static m:MaterialRegular.Check}"
+                                                               TextColor="White"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"
+                                                               IsVisible="{Binding IsChecked, Mode=OneWay}" />
+                                                    </Border>
+
+                                                    <Label Grid.Column="1"
+                                                           Text="{Binding Description}"
+                                                           FontSize="18"
+                                                           FontAttributes="Bold"
+                                                           LineHeight="1.5"
+                                                           VerticalOptions="Center"
+                                                           Margin="18,0,12,0"
+                                                           TextColor="{Binding IsChecked, Converter={StaticResource BoolToColorConverter}, ConverterParameter='Gray500|Black', Mode=OneWay}"
+                                                           TextDecorations="{Binding IsChecked, Converter={StaticResource BoolToTextDecorationsConverter}, Mode=OneWay}" />
+                                                </Grid>
+
+                                                <!-- Counter Layout - Shown when HasCounter = true -->
+                                                <VerticalStackLayout Padding="18" Spacing="12" IsVisible="{Binding HasCounter}">
+                                                    <!-- Top row: - button, + button, counter -->
+                                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                                                        <Button Text="-"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChecklistDetailViewModel}}, Path=DecrementCounterCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                BackgroundColor="{StaticResource Secondary}"
+                                                                TextColor="White"
+                                                                FontSize="24"
+                                                                FontAttributes="Bold"
+                                                                WidthRequest="50"
+                                                                HeightRequest="50"
+                                                                Padding="0"
+                                                                CornerRadius="10" />
+
+                                                        <Button Text="+"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChecklistDetailViewModel}}, Path=IncrementCounterCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                BackgroundColor="{StaticResource Success}"
+                                                                TextColor="White"
+                                                                FontSize="24"
+                                                                FontAttributes="Bold"
+                                                                WidthRequest="50"
+                                                                HeightRequest="50"
+                                                                Padding="0"
+                                                                CornerRadius="10" />
+
+                                                        <Label Text="{Binding Count}"
+                                                               FontSize="36"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource Primary}"
+                                                               VerticalOptions="Center"
+                                                               MinimumWidthRequest="60"
+                                                               HorizontalTextAlignment="Center" />
+                                                    </HorizontalStackLayout>
+
+                                                    <!-- Bottom row: Description -->
+                                                    <Label Text="{Binding Description}"
+                                                           FontSize="18"
+                                                           FontAttributes="Bold"
+                                                           LineHeight="1.5"
+                                                           HorizontalOptions="Center"
+                                                           HorizontalTextAlignment="Center"
+                                                           TextColor="Black" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Action Buttons - Extra large touch targets for outdoor use -->
+        <Border Grid.Row="2"
+                BackgroundColor="White"
+                Padding="20,18,20,20"
+                StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                <Button Grid.Column="0"
+                        Text="Reset"
+                        Command="{Binding ResetChecklistCommand}"
+                        BackgroundColor="{StaticResource Gray400}"
+                        TextColor="White"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        HeightRequest="60"
+                        CornerRadius="12" />
+
+                <Button Grid.Column="1"
+                        Text="Complete"
+                        Command="{Binding CompleteChecklistCommand}"
+                        BackgroundColor="{StaticResource Success}"
+                        TextColor="White"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        HeightRequest="60"
+                        CornerRadius="12" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

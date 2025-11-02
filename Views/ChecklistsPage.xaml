@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.ChecklistsPage"
+             x:DataType="vm:ChecklistsViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="22" Spacing="18">
+
+            <Label Text="Select a checklist to begin"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray600}"
+                   Margin="6,12,0,12" />
+
+            <CollectionView ItemsSource="{Binding Checklists}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChecklistInfo">
+                        <Border StrokeThickness="2"
+                                Stroke="{StaticResource Gray300}"
+                                BackgroundColor="White"
+                                Padding="0"
+                                Margin="0,0,0,18"
+                                HeightRequest="105">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChecklistsViewModel}}, Path=OpenChecklistCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*,Auto" Padding="24,0">
+                                <Label Grid.Column="0"
+                                       Text="{Binding DisplayName}"
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       FontFamily="MaterialRegular"
+                                       FontSize="32"
+                                       Text="{x:Static m:MaterialRegular.Chevron_right}"
+                                       TextColor="{StaticResource Gray400}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
