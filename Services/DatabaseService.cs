@@ -9,44 +9,55 @@ namespace powered_parachute.Services
     public class DatabaseService
     {
         private readonly SQLiteAsyncConnection _database;
+        private bool _initialized = false;
 
         public DatabaseService()
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "pegasus_flight.db3");
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<Flight>().Wait();
-            _database.CreateTableAsync<ChecklistLog>().Wait();
+        }
+
+        private async Task InitializeAsync()
+        {
+            if (_initialized) return;
+
+            await _database.CreateTableAsync<Flight>();
+            await _database.CreateTableAsync<ChecklistLog>();
+            _initialized = true;
         }
 
         #region Flight Operations
 
-        public Task<List<Flight>> GetFlightsAsync()
+        public async Task<List<Flight>> GetFlightsAsync()
         {
-            return _database.Table<Flight>()
+            await InitializeAsync();
+            return await _database.Table<Flight>()
                 .OrderByDescending(f => f.FlightDate)
                 .ThenByDescending(f => f.StartTime)
                 .ToListAsync();
         }
 
-        public Task<Flight> GetFlightAsync(int id)
+        public async Task<Flight> GetFlightAsync(int id)
         {
-            return _database.Table<Flight>()
+            await InitializeAsync();
+            return await _database.Table<Flight>()
                 .Where(f => f.Id == id)
                 .FirstOrDefaultAsync();
         }
 
-        public Task<int> SaveFlightAsync(Flight flight)
+        public async Task<int> SaveFlightAsync(Flight flight)
         {
+            await InitializeAsync();
             flight.ModifiedAt = DateTime.UtcNow;
 
             if (flight.Id != 0)
             {
-                return _database.UpdateAsync(flight);
+                return await _database.UpdateAsync(flight);
             }
             else
             {
                 flight.CreatedAt = DateTime.UtcNow;
-                return _database.InsertAsync(flight);
+                return await _database.InsertAsync(flight);
             }
         }
 
@@ -55,13 +66,23 @@ namespace powered_parachute.Services
             return _database.DeleteAsync(flight);
         }
 
+        /// <summary>
+        /// Deletes all flights in a single transaction (much faster than one-by-one)
+        /// </summary>
+        public async Task<int> DeleteAllFlightsAsync()
+        {
+            await InitializeAsync();
+            return await _database.ExecuteAsync("DELETE FROM flights");
+        }
+
         #endregion
 
         #region ChecklistLog Operations
 
-        public Task<List<ChecklistLog>> GetChecklistLogsAsync()
+        public async Task<List<ChecklistLog>> GetChecklistLogsAsync()
         {
-            return _database.Table<ChecklistLog>()
+            await InitializeAsync();
+            return await _database.Table<ChecklistLog>()
                 .OrderByDescending(c => c.CompletedAt)
                 .ToListAsync();
         }
@@ -89,16 +110,17 @@ namespace powered_parachute.Services
                 .FirstOrDefaultAsync();
         }
 
-        public Task<int> SaveChecklistLogAsync(ChecklistLog log)
+        public async Task<int> SaveChecklistLogAsync(ChecklistLog log)
         {
+            await InitializeAsync();
             if (log.Id != 0)
             {
-                return _database.UpdateAsync(log);
+                return await _database.UpdateAsync(log);
             }
             else
             {
                 log.CreatedAt = DateTime.UtcNow;
-                return _database.InsertAsync(log);
+                return await _database.InsertAsync(log);
             }
         }
 
@@ -108,10 +130,20 @@ namespace powered_parachute.Services
         }
 
         /// <summary>
+        /// Deletes all checklist logs in a single transaction (much faster than one-by-one)
+        /// </summary>
+        public async Task<int> DeleteAllChecklistLogsAsync()
+        {
+            await InitializeAsync();
+            return await _database.ExecuteAsync("DELETE FROM checklist_logs");
+        }
+
+        /// <summary>
         /// Gets flights with their associated checklist logs grouped by date
         /// </summary>
         public async Task<List<Flight>> GetFlightsWithLogsAsync()
         {
+            await InitializeAsync();
             var flights = new List<Flight>();
 
             // Get all checklist logs
@@ -157,12 +189,12 @@ namespace powered_parachute.Services
                     // Save the flight
                     await SaveFlightAsync(flight);
 
-                    // Update logs with flight ID
+                    // Update logs with flight ID in batch (much faster)
                     foreach (var log in dateLogs)
                     {
                         log.FlightId = flight.Id;
-                        await _database.UpdateAsync(log);
                     }
+                    await _database.UpdateAllAsync(dateLogs);
                 }
 
                 flights.Add(flight);

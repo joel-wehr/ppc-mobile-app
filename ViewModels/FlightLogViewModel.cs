@@ -82,22 +82,20 @@ namespace powered_parachute.ViewModels
         {
             bool confirm = await Shell.Current.DisplayAlert(
                 "Clear All Logs",
-                "Are you sure you want to delete all checklist logs? This cannot be undone.",
+                "Are you sure you want to delete all checklist logs and flights? This cannot be undone.",
                 "Delete",
                 "Cancel");
 
             if (!confirm) return;
 
-            var logs = await _databaseService.GetChecklistLogsAsync();
-            foreach (var log in logs)
-            {
-                await _databaseService.DeleteChecklistLogAsync(log);
-            }
+            // Delete all in batch (much faster - single query per table instead of N queries)
+            await _databaseService.DeleteAllChecklistLogsAsync();
+            await _databaseService.DeleteAllFlightsAsync();
 
             await LoadFlightsAsync();
         }
 
-        public async void OnAppearing()
+        public async Task OnAppearingAsync()
         {
             await LoadFlightsAsync();
         }
