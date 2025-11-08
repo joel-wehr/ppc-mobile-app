@@ -2,6 +2,20 @@
 
 A professional .NET MAUI app designed for Powrachute Pegasus 582 pilots to manage checklists and flight logs on iOS devices.
 
+---
+
+## ⚠️ IMPORTANT: PPC Training Content Has Moved
+
+**All comprehensive PPC training materials and platform specifications have been relocated to:**
+
+📁 **`C:\Users\joelw\Documents\Projects\PPC-knowledgebase`**
+
+This repository now focuses solely on the flight log mobile app. For the complete PPC knowledge base (119,000 words of training content, platform specifications, and source materials), see the PPC-knowledgebase project.
+
+**See**: `C:\Users\joelw\Documents\Projects\PPC-knowledgebase\README.md` for details.
+
+---
+
 ## Features
 
 ### ✅ Implemented (v1.0)

@@ -266,8 +266,7 @@ When resuming work:
 - **Full status:** See `PROJECT_STATUS.md` in root
 - **Color scheme:** See `COLOR_SCHEME.md`
 - **Reference docs:**
-  - Powrachute-Pegasus-POH.pdf
-  - Roy's Powered Parachute Book 2nd Ed.pdf
+  - Powrachute-Pegasus-POH.pdf (manufacturer documentation)
 
 ---
 
