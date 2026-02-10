@@ -4,12 +4,49 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:powered_parachute.Views"
+    xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
     Title="Pegasus Flight"
     FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:HomePage}"
-        Route="HomePage" />
+    <Shell.Resources>
+        <Style TargetType="TabBar">
+            <Setter Property="Shell.TabBarBackgroundColor" Value="#001F3F" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="#FFD700" />
+            <Setter Property="Shell.TabBarTitleColor" Value="#FFD700" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#AAAAAA" />
+        </Style>
+    </Shell.Resources>
+
+    <TabBar>
+        <ShellContent
+            Title="Dashboard"
+            Icon="{FontImageSource FontFamily=MaterialRegular, Glyph={x:Static m:MaterialRegular.Dashboard}, Color=White, Size=24}"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Route="Dashboard" />
+
+        <ShellContent
+            Title="Fly"
+            Icon="{FontImageSource FontFamily=MaterialRegular, Glyph={x:Static m:MaterialRegular.Flight_takeoff}, Color=White, Size=24}"
+            ContentTemplate="{DataTemplate views:ActiveFlightPage}"
+            Route="Fly" />
+
+        <ShellContent
+            Title="Checklists"
+            Icon="{FontImageSource FontFamily=MaterialRegular, Glyph={x:Static m:MaterialRegular.Checklist}, Color=White, Size=24}"
+            ContentTemplate="{DataTemplate views:ChecklistsPage}"
+            Route="Checklists" />
+
+        <ShellContent
+            Title="Logbook"
+            Icon="{FontImageSource FontFamily=MaterialRegular, Glyph={x:Static m:MaterialRegular.Menu_book}, Color=White, Size=24}"
+            ContentTemplate="{DataTemplate views:FlightLogPage}"
+            Route="Logbook" />
+
+        <ShellContent
+            Title="More"
+            Icon="{FontImageSource FontFamily=MaterialRegular, Glyph={x:Static m:MaterialRegular.More_horiz}, Color=White, Size=24}"
+            ContentTemplate="{DataTemplate views:MorePage}"
+            Route="More" />
+    </TabBar>
 
 </Shell>

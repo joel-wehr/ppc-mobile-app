@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.MaintenanceDetailPage"
+             x:DataType="vm:MaintenanceDetailViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="14">
+                <Label Text="Maintenance Date" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                <DatePicker Date="{Binding MaintenanceDate}" FontSize="16" />
+
+                <Label Text="Description" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                <Editor Text="{Binding Description}" Placeholder="Describe the work performed..."
+                        FontSize="16" MinimumHeightRequest="100" BackgroundColor="White" />
+
+                <Label Text="Parts Used" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                <Entry Text="{Binding PartsUsed}" Placeholder="List parts" FontSize="16" BackgroundColor="White" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Cost ($)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding Cost}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Engine Hours At Service" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding EngineHoursAtService}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Entry Text="{Binding PerformedBy}" Placeholder="Performed By" FontSize="16" BackgroundColor="White" />
+                <Editor Text="{Binding Notes}" Placeholder="Additional notes..." FontSize="16"
+                        MinimumHeightRequest="80" BackgroundColor="White" />
+
+                <Button Text="Delete Record" Command="{Binding DeleteCommand}"
+                        BackgroundColor="{StaticResource Secondary}" TextColor="White"
+                        FontSize="16" HeightRequest="45" CornerRadius="10" Margin="0,10,0,0"
+                        IsVisible="{Binding IsNew, Converter={StaticResource InvertedBoolConverter}}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow><Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" /></Border.Shadow>
+            <Button Text="Save" Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>

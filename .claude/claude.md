@@ -2,11 +2,11 @@
 
 ## Quick Start - Read This First! 🚀
 
-This is a .NET MAUI 9.0 powered parachute flight log app for iPhone 15 Pro. The app tracks checklists and flight sessions.
+This is a .NET MAUI 10.0 powered parachute flight log app for iPhone 15 Pro. The app tracks checklists and flight sessions.
 
-**Current Status:** App builds successfully. Was experiencing iOS deployment issues - user restarting Visual Studio.
+**Current Status:** App builds successfully. Upgraded to .NET 10 / VS 2026.
 
-**Last Session Date:** November 2, 2025
+**Last Session Date:** February 9, 2026
 
 ---
 
@@ -23,7 +23,7 @@ A pilot-focused app for powered parachute flights with:
 ## 🏗️ Architecture
 
 ### Tech Stack
-- **.NET MAUI 9.0** (Cross-platform: iOS, Android, Windows, MacCatalyst)
+- **.NET MAUI 10.0** (Cross-platform: iOS, Android, Windows, MacCatalyst)
 - **SQLite** database (`pegasus_flight.db3`)
 - **MVVM** pattern with CommunityToolkit.Mvvm
 - **Target Device:** iPhone 15 Pro (outdoor readability optimized)

@@ -36,5 +36,13 @@ artifacts/
 # MAUI
 *.binlog
 
+# Android keystore (NEVER commit signing keys)
+*.keystore
+*.jks
+
 # Mac
 .DS_Store
+
+# SSH keys / secrets
+*.pem
+*.env

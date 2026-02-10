@@ -1,8 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="m 105.50037,281.60863 c -2.70293,0 -5.00091,-0.90042 -6.893127,-2.70209 -1.892214,-1.84778 -2.837901,-4.04181 -2.837901,-6.58209 0,-2.58722 0.945687,-4.80389 2.837901,-6.65167 1.892217,-1.84778 4.190197,-2.77167 6.893127,-2.77167 2.74819,0 5.06798,0.92389 6.96019,2.77167 1.93749,1.84778 2.90581,4.06445 2.90581,6.65167 0,2.54028 -0.96832,4.73431 -2.90581,6.58209 -1.89221,1.80167 -4.212,2.70209 -6.96019,2.70209 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 213.56111,280.08446 H 195.99044 L 149.69953,207.0544 c -1.17121,-1.84778 -2.14037,-3.76515 -2.90581,-5.75126 h -0.40578 c 0.36051,2.12528 0.54076,6.67515 0.54076,13.6496 v 65.13172 h -15.54349 v -99.36009 h 18.71925 l 44.7374,71.29798 c 1.89222,2.95695 3.1087,4.98917 3.64945,6.09751 h 0.26996 c -0.45021,-2.6325 -0.67573,-7.09015 -0.67573,-13.37293 v -64.02256 h 15.47557 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="m 289.25134,280.08446 h -54.40052 v -99.36009 h 52.23835 v 13.99669 h -36.15411 v 28.13085 h 33.31621 v 13.9271 h -33.31621 v 29.37835 h 38.31628 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 366.56466,194.72106 H 338.7222 v 85.3634 h -16.08423 v -85.3634 h -27.77455 v -13.99669 h 71.70124 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!-- PPC (Powered Parachute) front view - chute up, white on transparent -->
+
+  <!-- Parachute Canopy - curved rectangle with cells -->
+  <path d="M 78,60 C 78,35 128,18 228,18 C 328,18 378,35 378,60 L 378,105 C 378,125 328,140 228,140 C 128,140 78,125 78,105 Z"
+        fill="none" stroke="#FFFFFF" stroke-width="8"/>
+
+  <!-- Canopy fill with slight transparency -->
+  <path d="M 78,60 C 78,35 128,18 228,18 C 328,18 378,35 378,60 L 378,105 C 378,125 328,140 228,140 C 128,140 78,125 78,105 Z"
+        fill="#FFFFFF" opacity="0.25"/>
+
+  <!-- Cell ribs (vertical lines on canopy) -->
+  <line x1="128" y1="28" x2="128" y2="132" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+  <line x1="168" y1="22" x2="168" y2="137" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+  <line x1="208" y1="19" x2="208" y2="139" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+  <line x1="248" y1="19" x2="248" y2="139" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+  <line x1="288" y1="22" x2="288" y2="137" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+  <line x1="328" y1="28" x2="328" y2="132" stroke="#FFFFFF" stroke-width="3.5" opacity="0.7"/>
+
+  <!-- Suspension lines - left side -->
+  <line x1="88" y1="110" x2="168" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="118" y1="118" x2="178" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="148" y1="128" x2="188" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+
+  <!-- Suspension lines - right side -->
+  <line x1="368" y1="110" x2="288" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="338" y1="118" x2="278" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="308" y1="128" x2="268" y2="260" stroke="#FFFFFF" stroke-width="3"/>
+
+  <!-- Cart frame - horizontal bar -->
+  <rect x="138" y="258" width="180" height="8" rx="3" fill="#FFFFFF"/>
+
+  <!-- Cart frame - vertical seat supports -->
+  <rect x="168" y="258" width="8" height="80" rx="2" fill="#FFFFFF"/>
+  <rect x="280" y="258" width="8" height="80" rx="2" fill="#FFFFFF"/>
+
+  <!-- Cart frame - lower cross bar -->
+  <rect x="148" y="332" width="160" height="8" rx="3" fill="#FFFFFF"/>
+
+  <!-- Seat back -->
+  <rect x="190" y="268" width="76" height="60" rx="8" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+
+  <!-- Prop cage (circle behind) -->
+  <circle cx="228" cy="310" r="58" fill="none" stroke="#FFFFFF" stroke-width="5" opacity="0.5"/>
+
+  <!-- Propeller - horizontal -->
+  <ellipse cx="228" cy="310" rx="48" ry="6" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- Engine block (small rectangle center) -->
+  <rect x="215" y="298" width="26" height="24" rx="4" fill="#FFFFFF" opacity="0.7"/>
+
+  <!-- Axle -->
+  <rect x="108" y="340" width="240" height="6" rx="3" fill="#FFFFFF"/>
+
+  <!-- Left wheel -->
+  <circle cx="118" cy="376" r="32" fill="none" stroke="#FFFFFF" stroke-width="7"/>
+  <circle cx="118" cy="376" r="8" fill="#FFFFFF"/>
+  <line x1="118" y1="343" x2="118" y2="340" stroke="#FFFFFF" stroke-width="6"/>
+
+  <!-- Right wheel -->
+  <circle cx="338" cy="376" r="32" fill="none" stroke="#FFFFFF" stroke-width="7"/>
+  <circle cx="338" cy="376" r="8" fill="#FFFFFF"/>
+  <line x1="338" y1="343" x2="338" y2="340" stroke="#FFFFFF" stroke-width="6"/>
+
+  <!-- Wheel struts (angled from axle to wheels) -->
+  <line x1="148" y1="340" x2="118" y2="355" stroke="#FFFFFF" stroke-width="5"/>
+  <line x1="308" y1="340" x2="338" y2="355" stroke="#FFFFFF" stroke-width="5"/>
+
+  <!-- Nose wheel (front, smaller, center) -->
+  <line x1="228" y1="340" x2="228" y2="415" stroke="#FFFFFF" stroke-width="5"/>
+  <circle cx="228" cy="425" r="18" fill="none" stroke="#FFFFFF" stroke-width="5"/>
+  <circle cx="228" cy="425" r="4" fill="#FFFFFF"/>
 </svg>

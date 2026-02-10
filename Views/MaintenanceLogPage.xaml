@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:models="clr-namespace:powered_parachute.Models"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.MaintenanceLogPage"
+             x:DataType="vm:MaintenanceLogViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="14">
+                <Label Text="Maintenance Records" FontSize="22" FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" Margin="4,12,0,8" />
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Logs}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MaintenanceLog">
+                            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="16,14">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MaintenanceLogViewModel}}, Path=OpenLogCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                        <Label Text="{Binding Description}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Primary}" LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding MaintenanceDate, StringFormat='{0:MMM d, yyyy}'}" FontSize="14" TextColor="{StaticResource Gray500}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding HasLogs, Converter={StaticResource InvertedBoolConverter}}"
+                                     HorizontalOptions="Center" Margin="0,40">
+                    <Label Text="No Maintenance Records" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Gray500}"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow><Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" /></Border.Shadow>
+            <Button Text="Add Record" Command="{Binding AddLogCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.DashboardPage"
+             x:DataType="vm:DashboardViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView BackgroundColor="#F5F5F5">
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- Welcome Header -->
+            <Border BackgroundColor="{StaticResource Primary}" Padding="22,18" StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="{Binding PilotName, StringFormat='Welcome, {0}'}"
+                           FontSize="26" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="{Binding ActivePpcName}"
+                           FontSize="16" TextColor="#90EE90" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Quick Stats Row -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                <!-- Total Hours -->
+                <Border Grid.Column="0" BackgroundColor="White" Padding="14,12" StrokeThickness="1" Stroke="{StaticResource Gray300}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="{Binding TotalHoursDisplay}" FontSize="24" FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" HorizontalTextAlignment="Center" />
+                        <Label Text="Total Hours" FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Flights This Month -->
+                <Border Grid.Column="1" BackgroundColor="White" Padding="14,12" StrokeThickness="1" Stroke="{StaticResource Gray300}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="{Binding FlightsThisMonth}" FontSize="24" FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" HorizontalTextAlignment="Center" />
+                        <Label Text="This Month" FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Landings 90 Days -->
+                <Border Grid.Column="2" BackgroundColor="White" Padding="14,12" StrokeThickness="1" Stroke="{StaticResource Gray300}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="{Binding LandingsLast90Days}" FontSize="24" FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" HorizontalTextAlignment="Center" />
+                        <Label Text="90-Day Ldgs" FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Start Flight Button -->
+            <Button Text="Start Flight"
+                    Command="{Binding StartFlightCommand}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="White"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    HeightRequest="65"
+                    CornerRadius="14" />
+
+            <!-- Equipment Alerts -->
+            <Border BackgroundColor="#FFF3CD" Padding="16,12" StrokeThickness="0"
+                    IsVisible="{Binding EngineAlert, Converter={StaticResource StringNullOrEmptyBoolConverter}}">
+                <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                <HorizontalStackLayout Spacing="10">
+                    <Label FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Warning}"
+                           FontSize="22" TextColor="#856404" VerticalOptions="Center" />
+                    <Label Text="{Binding EngineAlert}" FontSize="16" TextColor="#856404" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="#FFF3CD" Padding="16,12" StrokeThickness="0"
+                    IsVisible="{Binding WingAlert, Converter={StaticResource StringNullOrEmptyBoolConverter}}">
+                <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                <HorizontalStackLayout Spacing="10">
+                    <Label FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Warning}"
+                           FontSize="22" TextColor="#856404" VerticalOptions="Center" />
+                    <Label Text="{Binding WingAlert}" FontSize="16" TextColor="#856404" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Recent Flights -->
+            <Label Text="Recent Flights" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}"
+                   Margin="0,8,0,0" IsVisible="{Binding HasFlights}" />
+
+            <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding RecentFlights}"
+                                 IsVisible="{Binding HasFlights}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FlightSummary">
+                        <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="16,14">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=NavigateToFlightCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="{Binding DateDisplay}" FontSize="16" FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding Location}" FontSize="14"
+                                       TextColor="{StaticResource Gray500}" VerticalOptions="Center" Margin="12,0" />
+                                <Label Grid.Column="2" Text="{Binding DurationDisplay}" FontSize="14" FontAttributes="Bold"
+                                       TextColor="{StaticResource Success}" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <!-- Empty State: Setup Cards -->
+            <VerticalStackLayout Spacing="14" IsVisible="{Binding HasProfile, Converter={StaticResource InvertedBoolConverter}}">
+                <Border BackgroundColor="White" StrokeThickness="2" Stroke="{StaticResource Primary}" Padding="20,16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToSetupProfileCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="14">
+                        <Label FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Person}"
+                               FontSize="30" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                        <VerticalStackLayout>
+                            <Label Text="Set Up Profile" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Text="Add your pilot information" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="14" IsVisible="{Binding HasPpc, Converter={StaticResource InvertedBoolConverter}}">
+                <Border BackgroundColor="White" StrokeThickness="2" Stroke="{StaticResource Primary}" Padding="20,16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToAddPpcCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="14">
+                        <Label FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Flight}"
+                               FontSize="30" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                        <VerticalStackLayout>
+                            <Label Text="Add Your PPC" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Text="Set up your aircraft details" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

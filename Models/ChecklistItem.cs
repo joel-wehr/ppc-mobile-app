@@ -1,15 +1,19 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using powered_parachute.Models.Enums;
 
 namespace powered_parachute.Models
 {
     /// <summary>
-    /// Represents a single item in a checklist
+    /// Runtime checklist item used in the UI (not stored in DB directly)
     /// </summary>
     public partial class ChecklistItem : ObservableObject
     {
         public int Id { get; set; }
 
-        public ChecklistType ChecklistType { get; set; }
+        /// <summary>
+        /// Links back to the template item this was created from
+        /// </summary>
+        public int? TemplateItemId { get; set; }
 
         public string Section { get; set; } = string.Empty;
 
@@ -20,32 +24,23 @@ namespace powered_parachute.Models
         [ObservableProperty]
         private bool isChecked;
 
-        /// <summary>
-        /// For practice/maneuver items - tracks number of times performed
-        /// </summary>
         [ObservableProperty]
         private int count;
 
-        /// <summary>
-        /// Indicates if this item uses a counter instead of checkbox
-        /// </summary>
         public bool HasCounter { get; set; }
 
-        /// <summary>
-        /// Creates a deep copy of this checklist item
-        /// </summary>
         public ChecklistItem Clone()
         {
             return new ChecklistItem
             {
                 Id = this.Id,
-                ChecklistType = this.ChecklistType,
+                TemplateItemId = this.TemplateItemId,
                 Section = this.Section,
                 Description = this.Description,
                 Order = this.Order,
-                IsChecked = false, // Always start unchecked
-                HasCounter = this.HasCounter, // Preserve counter flag
-                Count = 0 // Always start at zero
+                IsChecked = false,
+                HasCounter = this.HasCounter,
+                Count = 0
             };
         }
     }

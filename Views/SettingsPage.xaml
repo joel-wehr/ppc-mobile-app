@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView BackgroundColor="#F5F5F5">
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Label Text="Data Management" FontSize="20" FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" Margin="4,12,0,4" />
+
+            <Button Text="Reset Checklists to Defaults"
+                    Command="{Binding ResetChecklistsCommand}"
+                    BackgroundColor="{StaticResource Secondary}" TextColor="White"
+                    FontSize="16" HeightRequest="50" CornerRadius="10" />
+
+            <Button Text="Clear All Flight Data"
+                    Command="{Binding ClearAllDataCommand}"
+                    BackgroundColor="#CC0000" TextColor="White"
+                    FontSize="16" HeightRequest="50" CornerRadius="10" />
+
+            <Label Text="About" FontSize="20" FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" Margin="0,20,0,4" />
+
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="20,16">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Pegasus Flight" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                    <Label Text="{Binding AppVersion, StringFormat='Version {0}'}" FontSize="16" TextColor="{StaticResource Gray500}" />
+                    <Label Text="PPC Flight Log &amp; Checklist App" FontSize="14" TextColor="{StaticResource Gray400}" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.MorePage"
+             x:DataType="vm:MoreViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView BackgroundColor="#F5F5F5">
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label Text="Settings &amp; More" FontSize="22" FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" Margin="4,12,0,8" />
+
+            <!-- Pilot Profile -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="0" HeightRequest="70">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToPilotProfileCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="20,0">
+                    <Label Grid.Column="0" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Person}"
+                           FontSize="28" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Pilot Profile" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="16,0" />
+                    <Label Grid.Column="2" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- My Equipment -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="0" HeightRequest="70">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToEquipmentCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="20,0">
+                    <Label Grid.Column="0" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Build}"
+                           FontSize="28" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="My Equipment" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="16,0" />
+                    <Label Grid.Column="2" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Maintenance -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="0" HeightRequest="70">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToMaintenanceCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="20,0">
+                    <Label Grid.Column="0" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Handyman}"
+                           FontSize="28" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Maintenance Log" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="16,0" />
+                    <Label Grid.Column="2" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Statistics -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="0" HeightRequest="70">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToStatisticsCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="20,0">
+                    <Label Grid.Column="0" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Bar_chart}"
+                           FontSize="28" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Statistics" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="16,0" />
+                    <Label Grid.Column="2" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Settings -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="0" HeightRequest="70">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToSettingsCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="20,0">
+                    <Label Grid.Column="0" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Settings}"
+                           FontSize="28" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Settings" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="16,0" />
+                    <Label Grid.Column="2" FontFamily="MaterialRegular" Text="{x:Static m:MaterialRegular.Chevron_right}"
+                           FontSize="24" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <!-- App Version -->
+            <Label Text="Pegasus Flight v1.0.0" FontSize="14" TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center" Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

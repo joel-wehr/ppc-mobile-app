@@ -2,37 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
              x:Class="powered_parachute.Views.FlightLogPage"
              x:DataType="vm:FlightLogViewModel"
              Title="{Binding Title}">
 
-    <Grid RowDefinitions="Auto,*" BackgroundColor="#F5F5F5">
+    <Grid RowDefinitions="Auto,*,Auto" BackgroundColor="#F5F5F5">
 
-        <!-- Header with Clear Button -->
+        <!-- Header -->
         <Border Grid.Row="0"
                 BackgroundColor="{StaticResource Primary}"
                 Padding="22,20"
                 StrokeThickness="0">
-            <Grid ColumnDefinitions="*,Auto">
-                <Label Grid.Column="0"
-                       Text="Flights"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="White"
-                       VerticalOptions="Center" />
-
-                <Button Grid.Column="1"
-                        Text="Clear All"
-                        Command="{Binding ClearAllLogsCommand}"
-                        BackgroundColor="{StaticResource Secondary}"
-                        TextColor="White"
-                        FontSize="16"
-                        FontAttributes="Bold"
-                        HeightRequest="45"
-                        Padding="20,0"
-                        CornerRadius="8"
-                        IsVisible="{Binding HasFlights}" />
-            </Grid>
+            <Label Text="Logbook"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
         </Border>
 
         <!-- Flights List -->
@@ -69,20 +55,23 @@
                                        TextColor="{StaticResource Success}"
                                        VerticalOptions="Center" />
 
-                                <!-- Checklists Count -->
-                                <Label Grid.Row="1" Grid.Column="0"
-                                       Text="{Binding ChecklistsDisplay}"
-                                       FontSize="16"
-                                       TextColor="{StaticResource Gray600}"
-                                       Margin="0,6,0,0" />
+                                <!-- Details Row -->
+                                <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                       Spacing="12" Margin="0,6,0,0">
+                                    <Label Text="{Binding ChecklistsDisplay}"
+                                           FontSize="16"
+                                           TextColor="{StaticResource Gray600}" />
 
-                                <!-- Duration -->
-                                <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding DurationDisplay}"
-                                       FontSize="16"
-                                       TextColor="{StaticResource Gray600}"
-                                       Margin="0,6,0,0"
-                                       IsVisible="{Binding DurationDisplay, Converter={StaticResource StringNullOrEmptyBoolConverter}}" />
+                                    <Label Text="{Binding DurationDisplay}"
+                                           FontSize="16"
+                                           TextColor="{StaticResource Gray600}"
+                                           IsVisible="{Binding DurationDisplay, Converter={StaticResource StringNullOrEmptyBoolConverter}}" />
+
+                                    <Label Text="{Binding OperationsDisplay}"
+                                           FontSize="16"
+                                           TextColor="{StaticResource Gray600}"
+                                           IsVisible="{Binding OperationsDisplay, Converter={StaticResource StringNullOrEmptyBoolConverter}}" />
+                                </HorizontalStackLayout>
 
                                 <!-- Location -->
                                 <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
@@ -99,20 +88,42 @@
         </ScrollView>
 
         <!-- Empty State -->
-        <VerticalStackLayout Grid.Row="1" Padding="40" Spacing="20" VerticalOptions="Center" IsVisible="{Binding HasFlights, Converter={StaticResource InvertedBoolConverter}}">
+        <VerticalStackLayout Grid.Row="1" Padding="40" Spacing="20" VerticalOptions="Center"
+                             IsVisible="{Binding HasFlights, Converter={StaticResource InvertedBoolConverter}}">
+            <Label FontFamily="MaterialRegular"
+                   Text="{x:Static m:MaterialRegular.Menu_book}"
+                   FontSize="64"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalOptions="Center" />
+
             <Label Text="No Flights Logged"
                    FontSize="24"
                    FontAttributes="Bold"
                    TextColor="{StaticResource Gray600}"
                    HorizontalOptions="Center" />
 
-            <Label Text="Complete a checklist to create your first flight log entry."
+            <Label Text="Complete a checklist or add a manual flight entry to start your logbook."
                    FontSize="16"
                    TextColor="{StaticResource Gray500}"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center"
                    Margin="0,10,0,0" />
         </VerticalStackLayout>
+
+        <!-- Add Manual Flight Button -->
+        <Border Grid.Row="2"
+                BackgroundColor="White"
+                Padding="20,14"
+                StrokeThickness="0">
+            <Button Text="+ New Flight"
+                    Command="{Binding AddManualFlightCommand}"
+                    BackgroundColor="{StaticResource Success}"
+                    TextColor="White"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HeightRequest="55"
+                    CornerRadius="12" />
+        </Border>
 
     </Grid>
 </ContentPage>

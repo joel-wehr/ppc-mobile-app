@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:models="clr-namespace:powered_parachute.Models"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.ChecklistEditorPage"
+             x:DataType="vm:ChecklistEditorViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <Label Text="Checklist Name" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                <Entry Text="{Binding TemplateName}" Placeholder="Enter checklist name"
+                       FontSize="18" BackgroundColor="White" />
+
+                <Label Text="Description" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                <Entry Text="{Binding TemplateDescription}" Placeholder="Brief description"
+                       FontSize="16" BackgroundColor="White" />
+
+                <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+                    <Label Grid.Column="0" Text="Items" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="+ Add Item" Command="{Binding AddItemCommand}"
+                            BackgroundColor="{StaticResource Success}" TextColor="White"
+                            FontSize="14" HeightRequest="40" CornerRadius="8" Padding="16,0" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Items}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:ChecklistTemplateItem">
+                            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="14">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="8">
+                                    <Entry Grid.Row="0" Grid.Column="0" Text="{Binding Description}"
+                                           Placeholder="Item description" FontSize="16" />
+                                    <Button Grid.Row="0" Grid.Column="1" Text="X"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChecklistEditorViewModel}}, Path=RemoveItemCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="{StaticResource Secondary}" TextColor="White"
+                                            WidthRequest="40" HeightRequest="40" CornerRadius="8" FontSize="14" Padding="0" />
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="8">
+                                        <Label Text="Section:" FontSize="14" TextColor="{StaticResource Gray500}" VerticalOptions="Center" />
+                                        <Entry Text="{Binding Section}" Placeholder="Section name"
+                                               FontSize="14" WidthRequest="200" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" />
+            </Border.Shadow>
+            <Button Text="Save Checklist" Command="{Binding SaveTemplateCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>

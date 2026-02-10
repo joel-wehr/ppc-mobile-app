@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.PilotProfilePage"
+             x:DataType="vm:PilotProfileViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="14">
+
+                <Label Text="Pilot Information" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                <Entry Text="{Binding FullName}" Placeholder="Full Name" FontSize="18" BackgroundColor="White" />
+                <Entry Text="{Binding CertificateNumber}" Placeholder="Certificate Number" FontSize="16" BackgroundColor="White" />
+
+                <Label Text="Personal Minimums" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,12,0,0" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="10">
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                        <Label Text="Max Wind (mph)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding MaxWindSpeed}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                        <Label Text="Max Crosswind (mph)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding MaxCrosswind}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                        <Label Text="Min Visibility (SM)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding MinVisibility}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                        <Label Text="Min Ceiling (ft)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding MinCeiling}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Label Text="Emergency Contact" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,12,0,0" />
+                <Entry Text="{Binding EmergencyContactName}" Placeholder="Contact Name" FontSize="16" BackgroundColor="White" />
+                <Entry Text="{Binding EmergencyContactPhone}" Placeholder="Phone Number" Keyboard="Telephone" FontSize="16" BackgroundColor="White" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow><Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" /></Border.Shadow>
+            <Button Text="Save Profile" Command="{Binding SaveProfileCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>

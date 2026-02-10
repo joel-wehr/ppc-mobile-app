@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.FlightEditorPage"
+             x:DataType="vm:FlightEditorViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <!-- Date/Time Section -->
+                <Label Text="Date &amp; Time" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Date" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <DatePicker Date="{Binding FlightDate}" FontSize="16" />
+                    </VerticalStackLayout>
+                </Grid>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Departure" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <TimePicker Time="{Binding DepartureTime}" FontSize="16" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Landing" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <TimePicker Time="{Binding LandingTime}" FontSize="16" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Location Section -->
+                <Label Text="Location" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Entry Text="{Binding DepartureLocation}" Placeholder="Departure location" FontSize="16" BackgroundColor="White" />
+                <Entry Text="{Binding LandingLocation}" Placeholder="Landing location (if different)" FontSize="16" BackgroundColor="White" />
+
+                <!-- Operations -->
+                <Label Text="Operations" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Takeoffs" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding TakeoffCount}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Landings" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding LandingCount}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Fuel -->
+                <Label Text="Fuel (Gallons)" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Start" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding FuelStart}" Keyboard="Numeric" Placeholder="0.0" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="End" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding FuelEnd}" Keyboard="Numeric" Placeholder="0.0" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Hobbs -->
+                <Label Text="Hobbs Time" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Start" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding HobbsStart}" Keyboard="Numeric" Placeholder="0.0" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="End" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding HobbsEnd}" Keyboard="Numeric" Placeholder="0.0" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Weather -->
+                <Label Text="Weather" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                        <Label Text="Wind Speed (mph)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding WindSpeed}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                        <Label Text="Direction" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding WindDirection}" Placeholder="N, NE, etc." FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                        <Label Text="Gusts (mph)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding WindGusts}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                        <Label Text="Temp (F)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding Temperature}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="0" Spacing="4">
+                        <Label Text="Visibility (SM)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding Visibility}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="1" Spacing="4">
+                        <Label Text="Ceiling (ft)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding Ceiling}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="3" Grid.Column="0" Spacing="4">
+                        <Label Text="Altimeter" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding AltimeterSetting}" Keyboard="Numeric" Placeholder="29.92" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="3" Grid.Column="1" Spacing="4">
+                        <Label Text="Density Alt (ft)" FontSize="14" TextColor="{StaticResource Gray500}" />
+                        <Entry Text="{Binding DensityAltitude}" Keyboard="Numeric" FontSize="16" BackgroundColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Notes -->
+                <Label Text="Notes" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+                <Editor Text="{Binding Notes}" Placeholder="Flight notes..." FontSize="16"
+                        MinimumHeightRequest="100" BackgroundColor="White" />
+                <Editor Text="{Binding LessonsLearned}" Placeholder="Lessons learned..."
+                        FontSize="16" MinimumHeightRequest="80" BackgroundColor="White" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" />
+            </Border.Shadow>
+            <Button Text="Save Flight" Command="{Binding SaveFlightCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>

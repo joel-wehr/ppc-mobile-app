@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
              x:Class="powered_parachute.Views.FlightDetailPage"
              x:DataType="vm:FlightDetailViewModel"
              Title="{Binding Title}">
@@ -9,7 +10,7 @@
     <ScrollView BackgroundColor="#F5F5F5">
         <VerticalStackLayout Padding="22" Spacing="20">
 
-            <!-- Flight Date and Time -->
+            <!-- Flight Date and Time Header -->
             <Border BackgroundColor="{StaticResource Primary}"
                     Padding="22,18"
                     StrokeThickness="0">
@@ -33,6 +34,157 @@
                                FontAttributes="Bold"
                                TextColor="#90EE90" />
                     </HorizontalStackLayout>
+
+                    <!-- Flight Type Badge -->
+                    <Border BackgroundColor="#FFFFFF30"
+                            Padding="12,4"
+                            StrokeThickness="0"
+                            HorizontalOptions="Start"
+                            Margin="0,4,0,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding FlightTypeDisplay}"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Location -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding Location, Converter={StaticResource StringNullOrEmptyBoolConverter}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <HorizontalStackLayout Spacing="12">
+                    <Label FontFamily="MaterialRegular"
+                           Text="{x:Static m:MaterialRegular.Location_on}"
+                           FontSize="24"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+                    <Label Text="{Binding Location}"
+                           FontSize="18"
+                           TextColor="Black"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Operations -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding OperationsDisplay, Converter={StaticResource StringNullOrEmptyBoolConverter}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <HorizontalStackLayout Spacing="12">
+                    <Label FontFamily="MaterialRegular"
+                           Text="{x:Static m:MaterialRegular.Flight_takeoff}"
+                           FontSize="24"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+                    <Label Text="{Binding OperationsDisplay}"
+                           FontSize="18"
+                           TextColor="Black"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Fuel Section -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding HasFuel}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="6">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontFamily="MaterialRegular"
+                               Text="{x:Static m:MaterialRegular.Local_gas_station}"
+                               FontSize="24"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                        <Label Text="Fuel"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding FuelDisplay}"
+                           FontSize="16"
+                           TextColor="Black"
+                           Margin="34,0,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Hobbs Section -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding HasHobbs}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="6">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontFamily="MaterialRegular"
+                               Text="{x:Static m:MaterialRegular.Timer}"
+                               FontSize="24"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                        <Label Text="Engine Hours"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding HobbsDisplay}"
+                           FontSize="16"
+                           TextColor="Black"
+                           Margin="34,0,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Weather Section -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding HasWeather}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="6">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontFamily="MaterialRegular"
+                               Text="{x:Static m:MaterialRegular.Cloud}"
+                               FontSize="24"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                        <Label Text="Weather"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding WeatherDisplay}"
+                           FontSize="16"
+                           TextColor="Black"
+                           Margin="34,0,0,0" />
                 </VerticalStackLayout>
             </Border>
 
@@ -45,124 +197,108 @@
                     <RoundRectangle CornerRadius="12" />
                 </Border.StrokeShape>
 
-                <HorizontalStackLayout Spacing="10">
-                    <Label Text="📋"
-                           FontSize="24"
-                           VerticalOptions="Center" />
-
-                    <VerticalStackLayout Spacing="4">
+                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontFamily="MaterialRegular"
+                               Text="{x:Static m:MaterialRegular.Checklist}"
+                               FontSize="24"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
                         <Label Text="{Binding TotalChecklists, StringFormat='{0} Checklists Completed'}"
                                FontSize="18"
                                FontAttributes="Bold"
-                               TextColor="{StaticResource Primary}" />
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
 
-                        <Label Text="Tap below to see details"
-                               FontSize="14"
-                               TextColor="{StaticResource Gray500}" />
+                    <!-- Checklist Log Items -->
+                    <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding ChecklistLogs}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChecklistLogSummary">
+                                <Border BackgroundColor="{StaticResource Gray100}"
+                                        StrokeThickness="0"
+                                        Padding="16,12">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"
+                                               VerticalOptions="Center" />
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding CompletionPercentage, StringFormat='{0}%'}"
+                                               FontSize="14"
+                                               TextColor="{StaticResource Success}"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"
+                                               Margin="0,0,10,0" />
+
+                                        <Label Grid.Column="2"
+                                               Text="{Binding TimeDisplay}"
+                                               FontSize="14"
+                                               TextColor="{StaticResource Gray500}"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
+                </VerticalStackLayout>
             </Border>
 
-            <!-- Checklist Details -->
-            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding ChecklistGroups}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="vm:ChecklistLogGroup">
-                        <VerticalStackLayout Spacing="10">
-                            <!-- Section for each checklist type -->
-                            <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Items}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:ChecklistLogItem">
-                                        <Border BackgroundColor="White"
-                                                StrokeThickness="1"
-                                                Stroke="{StaticResource Gray300}"
-                                                Padding="16,14">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="10" />
-                                            </Border.StrokeShape>
+            <!-- Notes Section -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding HasNotes}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
 
-                                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
-                                                <Label Grid.Row="0" Grid.Column="0"
-                                                       Text="{Binding ChecklistName}"
-                                                       FontSize="17"
-                                                       FontAttributes="Bold"
-                                                       TextColor="{StaticResource Primary}" />
-
-                                                <Label Grid.Row="0" Grid.Column="1"
-                                                       Text="{Binding TimeDisplay}"
-                                                       FontSize="16"
-                                                       FontAttributes="Bold"
-                                                       TextColor="{StaticResource Success}"
-                                                       VerticalOptions="Center" />
-
-                                                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                                       Text="{Binding CompletionPercentage, StringFormat='✓ {0}% complete'}"
-                                                       FontSize="14"
-                                                       TextColor="{Binding CompletionPercentage, Converter={StaticResource CompletionColorConverter}}"
-                                                       Margin="0,4,0,0" />
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </VerticalStackLayout>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
-
-            <!-- Flight Notes Section -->
-            <VerticalStackLayout Spacing="12">
-                <Label Text="Flight Details"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="{StaticResource Primary}" />
-
-                <!-- Location -->
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="Location"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource Gray700}" />
-
-                    <Entry Text="{Binding Location}"
-                           Placeholder="Airport or flying site"
-                           FontSize="16"
-                           BackgroundColor="White" />
-                </VerticalStackLayout>
-
-                <!-- Weather -->
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="Weather Conditions"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource Gray700}" />
-
-                    <Entry Text="{Binding Weather}"
-                           Placeholder="Wind, temperature, visibility..."
-                           FontSize="16"
-                           BackgroundColor="White" />
-                </VerticalStackLayout>
-
-                <!-- Notes -->
                 <VerticalStackLayout Spacing="6">
                     <Label Text="Notes"
-                           FontSize="16"
+                           FontSize="18"
                            FontAttributes="Bold"
-                           TextColor="{StaticResource Gray700}" />
-
-                    <Editor Text="{Binding Notes}"
-                            Placeholder="Flight notes, observations, issues..."
-                            FontSize="16"
-                            MinimumHeightRequest="120"
-                            BackgroundColor="White" />
+                           TextColor="{StaticResource Primary}" />
+                    <Label Text="{Binding Notes}"
+                           FontSize="16"
+                           TextColor="Black" />
                 </VerticalStackLayout>
-            </VerticalStackLayout>
+            </Border>
+
+            <!-- Lessons Learned Section -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Gray300}"
+                    Padding="20,16"
+                    IsVisible="{Binding HasLessons}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Lessons Learned"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+                    <Label Text="{Binding LessonsLearned}"
+                           FontSize="16"
+                           TextColor="Black" />
+                </VerticalStackLayout>
+            </Border>
 
             <!-- Action Buttons -->
             <Grid ColumnDefinitions="*,*" ColumnSpacing="15" Margin="0,10,0,20">
                 <Button Grid.Column="0"
-                        Text="Save"
-                        Command="{Binding SaveFlightCommand}"
-                        BackgroundColor="{StaticResource Success}"
+                        Text="Edit"
+                        Command="{Binding EditFlightCommand}"
+                        BackgroundColor="{StaticResource Primary}"
                         TextColor="White"
                         FontSize="18"
                         FontAttributes="Bold"

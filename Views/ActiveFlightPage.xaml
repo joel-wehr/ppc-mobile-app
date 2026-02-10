@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.ActiveFlightPage"
+             x:DataType="vm:ActiveFlightViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto" BackgroundColor="#F5F5F5">
+
+        <!-- Timer Header -->
+        <Border Grid.Row="0" BackgroundColor="{StaticResource Primary}" Padding="20" StrokeThickness="0">
+            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                <Label Text="{Binding ElapsedTimeDisplay}" FontSize="48" FontAttributes="Bold"
+                       TextColor="White" HorizontalTextAlignment="Center"
+                       IsVisible="{Binding IsSessionActive}" />
+                <Label Text="Flight Timer" FontSize="16" TextColor="#90EE90"
+                       HorizontalTextAlignment="Center" IsVisible="{Binding IsSessionActive}" />
+                <Label Text="Ready to Fly" FontSize="28" FontAttributes="Bold"
+                       TextColor="White" HorizontalTextAlignment="Center"
+                       IsVisible="{Binding IsSessionActive, Converter={StaticResource InvertedBoolConverter}}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Checklist Quick Launch -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="12">
+
+                <!-- Departure Location (before start) -->
+                <VerticalStackLayout Spacing="6" IsVisible="{Binding IsSessionActive, Converter={StaticResource InvertedBoolConverter}}">
+                    <Label Text="Departure Location" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                    <Entry Text="{Binding DepartureLocation}" Placeholder="Airport or flying site"
+                           FontSize="16" BackgroundColor="White" />
+                </VerticalStackLayout>
+
+                <Label Text="Checklists" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}"
+                       Margin="0,8,0,4" />
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding ChecklistStatuses}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ChecklistStatus">
+                            <Border BackgroundColor="White" StrokeThickness="2" Stroke="{StaticResource Gray300}"
+                                    Padding="18,14" MinimumHeightRequest="65">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ActiveFlightViewModel}}, Path=OpenChecklistCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <BoxView Grid.Column="0" WidthRequest="8" HeightRequest="8" CornerRadius="4"
+                                             Color="{Binding StatusColor}" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Name}" FontSize="18" FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}" VerticalOptions="Center" Margin="14,0" />
+                                    <Label Grid.Column="2" FontFamily="MaterialRegular"
+                                           Text="{x:Static m:MaterialRegular.Chevron_right}" FontSize="24"
+                                           TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Action Button -->
+        <Border Grid.Row="2" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" />
+            </Border.Shadow>
+
+            <Button Text="Start Flight"
+                    Command="{Binding StartSessionCommand}"
+                    BackgroundColor="{StaticResource Success}"
+                    TextColor="White" FontSize="22" FontAttributes="Bold"
+                    HeightRequest="60" CornerRadius="14"
+                    IsVisible="{Binding IsSessionActive, Converter={StaticResource InvertedBoolConverter}}" />
+        </Border>
+
+        <Border Grid.Row="2" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0"
+                IsVisible="{Binding IsSessionActive}">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" />
+            </Border.Shadow>
+
+            <Button Text="End Flight"
+                    Command="{Binding EndSessionCommand}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="White" FontSize="22" FontAttributes="Bold"
+                    HeightRequest="60" CornerRadius="14" />
+        </Border>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             x:Class="powered_parachute.Views.StatisticsPage"
+             x:DataType="vm:StatisticsViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView BackgroundColor="#F5F5F5">
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Label Text="Pilot Statistics" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+
+            <!-- Flight Totals -->
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="20,16">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="14" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                        <Label Text="{Binding TotalFlights}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="Total Flights" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                        <Label Text="{Binding TotalHours, StringFormat='{0}h'}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="Total Hours" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                        <Label Text="{Binding TotalLandings}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="Total Landings" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1">
+                        <Label Text="{Binding TotalTakeoffs}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="Total Takeoffs" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="0">
+                        <Label Text="{Binding FlightsThisMonth}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="This Month" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="1">
+                        <Label Text="{Binding FlightsThisYear}" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                        <Label Text="This Year" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Currency -->
+            <Label Text="Currency" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" Margin="0,8,0,0" />
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="20,16">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding CurrencyText}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                    <Label Text="{Binding LandingsLast90Days, StringFormat='{0} landings in last 90 days'}"
+                           FontSize="16" TextColor="{StaticResource Gray500}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Equipment Stats -->
+            <Label Text="Equipment" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}"
+                   Margin="0,8,0,0" IsVisible="{Binding HasEquipment}" />
+            <Border BackgroundColor="White" StrokeThickness="1" Stroke="{StaticResource Gray300}" Padding="20,16"
+                    IsVisible="{Binding HasEquipment}">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding FrameName}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="10" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                            <Label Text="{Binding EngineHoursDisplay}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Text="Engine Hours" FontSize="13" TextColor="{StaticResource Gray500}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="{Binding HoursUntilTboDisplay}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Text="Until TBO" FontSize="13" TextColor="{StaticResource Gray500}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                            <Label Text="{Binding WingHoursDisplay}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Text="Wing Hours" FontSize="13" TextColor="{StaticResource Gray500}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

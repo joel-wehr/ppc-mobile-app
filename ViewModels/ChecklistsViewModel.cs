@@ -9,49 +9,79 @@ namespace powered_parachute.ViewModels
 {
     public partial class ChecklistsViewModel : BaseViewModel
     {
-        private readonly ChecklistService _checklistService;
+        private readonly DatabaseService _databaseService;
 
         [ObservableProperty]
         private ObservableCollection<ChecklistInfo> checklists = new();
 
-        public ChecklistsViewModel(ChecklistService checklistService)
+        [ObservableProperty]
+        private bool isEditMode;
+
+        public ChecklistsViewModel(DatabaseService databaseService)
         {
-            _checklistService = checklistService;
+            _databaseService = databaseService;
             Title = "Checklists";
-            LoadChecklists();
         }
 
-        private void LoadChecklists()
+        public async Task LoadChecklistsAsync()
         {
-            var checklistTypes = _checklistService.GetChecklistTypes();
+            var templates = await _databaseService.GetActiveTemplatesAsync();
 
-            foreach (var (type, displayName, description) in checklistTypes)
-            {
-                Checklists.Add(new ChecklistInfo
+            Checklists = new ObservableCollection<ChecklistInfo>(
+                templates.Select(t => new ChecklistInfo
                 {
-                    Type = type,
-                    DisplayName = displayName,
-                    Description = description
-                });
-            }
+                    TemplateId = t.Id,
+                    DisplayName = t.Name,
+                    Description = t.Description ?? string.Empty,
+                    IsDefault = t.IsDefault
+                }));
         }
 
         [RelayCommand]
         async Task OpenChecklist(ChecklistInfo checklistInfo)
         {
-            var param = new Dictionary<string, object>
-            {
-                { "ChecklistType", checklistInfo.Type.ToString() }
-            };
+            await Shell.Current.GoToAsync($"{nameof(ChecklistDetailPage)}?TemplateId={checklistInfo.TemplateId}");
+        }
 
-            await Shell.Current.GoToAsync(nameof(ChecklistDetailPage), param);
+        [RelayCommand]
+        async Task EditChecklist(ChecklistInfo checklistInfo)
+        {
+            await Shell.Current.GoToAsync($"{nameof(ChecklistEditorPage)}?TemplateId={checklistInfo.TemplateId}");
+        }
+
+        [RelayCommand]
+        async Task AddChecklist()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ChecklistEditorPage)}?TemplateId=0");
+        }
+
+        [RelayCommand]
+        async Task DeleteChecklist(ChecklistInfo checklistInfo)
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync(
+                "Delete", $"Delete \"{checklistInfo.DisplayName}\"?", "Delete", "Cancel");
+            if (!confirm) return;
+
+            var template = await _databaseService.GetTemplateAsync(checklistInfo.TemplateId);
+            if (template != null)
+            {
+                await _databaseService.DeleteTemplateAsync(template);
+                await LoadChecklistsAsync();
+            }
+        }
+
+        [RelayCommand]
+        void ToggleEditMode()
+        {
+            IsEditMode = !IsEditMode;
         }
     }
 
     public class ChecklistInfo
     {
-        public ChecklistType Type { get; set; }
+        public int TemplateId { get; set; }
         public string DisplayName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool IsDefault { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using powered_parachute.Models;
+using powered_parachute.Models.Enums;
 using powered_parachute.Services;
+using powered_parachute.Views;
 using System.Collections.ObjectModel;
 
 namespace powered_parachute.ViewModels
@@ -16,9 +18,6 @@ namespace powered_parachute.ViewModels
 
         [ObservableProperty]
         private Flight? flight;
-
-        [ObservableProperty]
-        private ObservableCollection<ChecklistLogGroup> checklistGroups = new();
 
         [ObservableProperty]
         private string dateDisplay = string.Empty;
@@ -36,10 +35,43 @@ namespace powered_parachute.ViewModels
         private string location = string.Empty;
 
         [ObservableProperty]
-        private string weather = string.Empty;
+        private string flightTypeDisplay = string.Empty;
+
+        [ObservableProperty]
+        private string operationsDisplay = string.Empty;
+
+        [ObservableProperty]
+        private string fuelDisplay = string.Empty;
+
+        [ObservableProperty]
+        private string hobbsDisplay = string.Empty;
+
+        [ObservableProperty]
+        private string weatherDisplay = string.Empty;
 
         [ObservableProperty]
         private string notes = string.Empty;
+
+        [ObservableProperty]
+        private string lessonsLearned = string.Empty;
+
+        [ObservableProperty]
+        private ObservableCollection<ChecklistLogSummary> checklistLogs = new();
+
+        [ObservableProperty]
+        private bool hasWeather;
+
+        [ObservableProperty]
+        private bool hasFuel;
+
+        [ObservableProperty]
+        private bool hasHobbs;
+
+        [ObservableProperty]
+        private bool hasNotes;
+
+        [ObservableProperty]
+        private bool hasLessons;
 
         public FlightDetailViewModel(DatabaseService databaseService)
         {
@@ -58,102 +90,138 @@ namespace powered_parachute.ViewModels
         private async Task LoadFlightDetailsAsync()
         {
             Flight = await _databaseService.GetFlightAsync(FlightId);
+            if (Flight == null) return;
 
-            if (Flight == null)
-                return;
-
-            // Set display values
             DateDisplay = Flight.FlightDate.ToString("dddd, MMMM d, yyyy");
 
-            if (Flight.DurationMinutes.HasValue && Flight.DurationMinutes.Value > 0)
+            // Duration
+            if (Flight.HoursFlown.HasValue && Flight.HoursFlown.Value > 0)
+            {
+                DurationDisplay = Flight.HoursFlown.Value.ToString("F1") + "h";
+            }
+            else if (Flight.DurationMinutes.HasValue && Flight.DurationMinutes.Value > 0)
             {
                 var hours = Flight.DurationMinutes.Value / 60;
                 var minutes = Flight.DurationMinutes.Value % 60;
-                DurationDisplay = hours > 0
-                    ? $"{hours}h {minutes}m"
-                    : $"{minutes}m";
+                DurationDisplay = hours > 0 ? $"{hours}h {minutes}m" : $"{minutes}m";
             }
             else
             {
                 DurationDisplay = "Not recorded";
             }
 
-            if (Flight.StartTime.HasValue && Flight.EndTime.HasValue)
+            // Time range
+            var start = Flight.DepartureTime ?? Flight.StartTime;
+            var end = Flight.LandingTime ?? Flight.EndTime;
+            if (start.HasValue && end.HasValue)
             {
-                TimeRangeDisplay = $"{Flight.StartTime.Value:h:mm tt} - {Flight.EndTime.Value:h:mm tt}";
+                TimeRangeDisplay = $"{start.Value:h:mm tt} - {end.Value:h:mm tt}";
             }
             else
             {
                 TimeRangeDisplay = "Not recorded";
             }
 
-            Location = Flight.Location ?? string.Empty;
-            Weather = Flight.WeatherConditions ?? string.Empty;
-            Notes = Flight.Notes ?? string.Empty;
+            Location = Flight.DepartureLocation ?? Flight.Location ?? string.Empty;
 
-            // Load checklist logs for this flight
+            // Flight type
+            FlightTypeDisplay = Flight.FlightType switch
+            {
+                FlightType.Local => "Local",
+                FlightType.CrossCountry => "Cross Country",
+                FlightType.TrainingDual => "Training (Dual)",
+                FlightType.TrainingSolo => "Training (Solo)",
+                FlightType.Practice => "Practice",
+                FlightType.CheckRide => "Check Ride",
+                _ => "Local"
+            };
+
+            // Operations
+            if (Flight.TakeoffCount.HasValue || Flight.LandingCount.HasValue)
+            {
+                OperationsDisplay = $"{Flight.TakeoffCount ?? 0} takeoffs, {Flight.LandingCount ?? 0} landings";
+            }
+
+            // Fuel
+            HasFuel = Flight.FuelStartGallons.HasValue || Flight.FuelEndGallons.HasValue;
+            if (HasFuel)
+            {
+                FuelDisplay = $"Start: {Flight.FuelStartGallons?.ToString("F1") ?? "--"} gal, End: {Flight.FuelEndGallons?.ToString("F1") ?? "--"} gal";
+                if (Flight.FuelConsumed.HasValue)
+                    FuelDisplay += $" (Used: {Flight.FuelConsumed.Value:F1} gal)";
+            }
+
+            // Hobbs
+            HasHobbs = Flight.HobbsStart.HasValue || Flight.HobbsEnd.HasValue;
+            if (HasHobbs)
+            {
+                HobbsDisplay = $"Start: {Flight.HobbsStart?.ToString("F1") ?? "--"}, End: {Flight.HobbsEnd?.ToString("F1") ?? "--"}";
+            }
+
+            // Weather
+            var weatherParts = new List<string>();
+            if (Flight.WindSpeed.HasValue)
+                weatherParts.Add($"Wind: {Flight.WindSpeed}mph {Flight.WindDirection ?? ""}".Trim());
+            if (Flight.Temperature.HasValue)
+                weatherParts.Add($"Temp: {Flight.Temperature}F");
+            if (Flight.Visibility.HasValue)
+                weatherParts.Add($"Vis: {Flight.Visibility}SM");
+            HasWeather = weatherParts.Any() || !string.IsNullOrEmpty(Flight.WeatherNotes) || !string.IsNullOrEmpty(Flight.WeatherConditions);
+            WeatherDisplay = weatherParts.Any() ? string.Join(" | ", weatherParts) : (Flight.WeatherConditions ?? string.Empty);
+
+            Notes = Flight.Notes ?? string.Empty;
+            HasNotes = !string.IsNullOrEmpty(Notes);
+            LessonsLearned = Flight.LessonsLearned ?? string.Empty;
+            HasLessons = !string.IsNullOrEmpty(LessonsLearned);
+
+            // Load checklist logs
             var logs = await _databaseService.GetChecklistLogsByFlightAsync(FlightId);
             TotalChecklists = logs.Count;
-
-            // Group by checklist type
-            var groups = logs
-                .GroupBy(l => l.ChecklistType)
-                .Select(g => new ChecklistLogGroup(g.First().CompletedAt.Date, g.ToList()))
-                .ToList();
-
-            ChecklistGroups = new ObservableCollection<ChecklistLogGroup>(groups);
+            ChecklistLogs = new ObservableCollection<ChecklistLogSummary>(
+                logs.Select(l => new ChecklistLogSummary
+                {
+                    Name = l.TemplateName ?? $"Checklist #{l.ChecklistType}",
+                    TimeDisplay = l.CompletedAt.ToString("h:mm tt"),
+                    CompletionPercentage = l.TotalItems > 0 ? (int)((double)l.CheckedItems / l.TotalItems * 100) : 0
+                }));
         }
 
         [RelayCommand]
-        async Task SaveFlight()
+        async Task EditFlight()
         {
-            if (Flight == null)
-                return;
-
-            Flight.Location = Location;
-            Flight.WeatherConditions = Weather;
-            Flight.Notes = Notes;
-            Flight.ModifiedAt = DateTime.UtcNow;
-
-            await _databaseService.SaveFlightAsync(Flight);
-
-            await Shell.Current.DisplayAlert(
-                "Saved",
-                "Flight details updated",
-                "OK");
+            await Shell.Current.GoToAsync($"{nameof(FlightEditorPage)}?FlightId={FlightId}");
         }
 
         [RelayCommand]
         async Task DeleteFlight()
         {
-            if (Flight == null)
-                return;
+            if (Flight == null) return;
 
-            bool confirm = await Shell.Current.DisplayAlert(
+            bool confirm = await Shell.Current.DisplayAlertAsync(
                 "Delete Flight",
                 "Are you sure you want to delete this flight and all associated checklist logs? This cannot be undone.",
                 "Delete",
                 "Cancel");
 
-            if (!confirm)
-                return;
+            if (!confirm) return;
 
-            // Delete all associated checklist logs
             var logs = await _databaseService.GetChecklistLogsByFlightAsync(FlightId);
             foreach (var log in logs)
             {
                 await _databaseService.DeleteChecklistLogAsync(log);
             }
 
-            // Delete the flight
             await _databaseService.DeleteFlightAsync(Flight);
 
-            await Shell.Current.DisplayAlert(
-                "Deleted",
-                "Flight deleted successfully",
-                "OK");
-
+            await Shell.Current.DisplayAlertAsync("Deleted", "Flight deleted successfully.", "OK");
             await Shell.Current.GoToAsync("..");
         }
+    }
+
+    public class ChecklistLogSummary
+    {
+        public string Name { get; set; } = string.Empty;
+        public string TimeDisplay { get; set; } = string.Empty;
+        public int CompletionPercentage { get; set; }
     }
 }

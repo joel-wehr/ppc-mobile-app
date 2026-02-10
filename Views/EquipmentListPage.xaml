@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:powered_parachute.ViewModels"
+             xmlns:models="clr-namespace:powered_parachute.Models"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons"
+             x:Class="powered_parachute.Views.EquipmentListPage"
+             x:DataType="vm:EquipmentListViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="#F5F5F5">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="14">
+                <Label Text="Your PPC Fleet" FontSize="22" FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" Margin="4,12,0,8" />
+
+                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Frames}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:PpcFrame">
+                            <Border BackgroundColor="White" StrokeThickness="2" Stroke="{StaticResource Primary}"
+                                    Padding="20,16" MinimumHeightRequest="80">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EquipmentListViewModel}}, Path=OpenFrameCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                        <Label Text="{Binding DisplayName}" FontSize="20" FontAttributes="Bold"
+                                               TextColor="{StaticResource Primary}" />
+                                        <Label Text="{Binding NNumber}" FontSize="14" TextColor="{StaticResource Gray500}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" FontFamily="MaterialRegular"
+                                           Text="{x:Static m:MaterialRegular.Chevron_right}"
+                                           FontSize="28" TextColor="{StaticResource Gray400}" VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Empty state -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding HasFrames, Converter={StaticResource InvertedBoolConverter}}"
+                                     HorizontalOptions="Center" Margin="0,40">
+                    <Label Text="No PPC Added Yet" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Gray500}"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Add your powered parachute to get started." FontSize="16" TextColor="{StaticResource Gray400}"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="White" Padding="20,14,20,20" StrokeThickness="0">
+            <Border.Shadow><Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,-2" /></Border.Shadow>
+            <Button Text="Add PPC" Command="{Binding AddPpcCommand}"
+                    BackgroundColor="{StaticResource Success}" TextColor="White"
+                    FontSize="20" FontAttributes="Bold" HeightRequest="55" CornerRadius="12" />
+        </Border>
+    </Grid>
+</ContentPage>
